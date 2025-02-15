@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #6A82FB 0%, #8258FA 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .widget {
+            position: absolute;
+            border: 1px solid #ddd;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .widget:hover {
+            transform: scale(1.02);
+        }
+        .handle {
+            width: 100%;
+            height: 10px;
+            background-color: #007BFF;
+            cursor: grab;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        iframe {
+            border: none;
+        }
+        .selected {
+            outline: 2px dashed #FF5733;
+        }
+        .resizing {
+            outline: 2px dashed #33FF57;
+        }
+        button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #6A82FB;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-in-out;
+        }
+        .splash-screen h1 {
+            color: white;
+            font-size: 3rem;
+            animation: fadeIn 2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .linksWidget a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px;
+            text-decoration: none;
+            color: inherit;
+            cursor: grab;
+        }
+        .linksWidget a:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="splash-screen" id="splashScreen">
+        <h1>Moin!</h1>
+    </div>
+
+    <div class="widget" id="chatbotWidget" style="left: 20px; top: 20px; width: 50%; height: 400px;">
+        <div class="handle"></div>
+        <iframe id="JotFormIFrame-0194f711007e78dd80592a93393181dc96c9"
+            title="Chatbot: Wiki Knowledge AI Chatbot" onload="window.parent.scrollTo(0,0)"
+            allowtransparency="true" allow="geolocation; microphone; camera; fullscreen"
+            src="https://eu.jotform.com/agent/0194f711007e78dd80592a93393181dc96c9?embedMode=iframe&background=0&shadow=1"
+            frameborder="0" style="width: 100%; height: 100%;"></iframe>
+    </div>
+
+    <div class="widget" id="windFinderWidget1" style="left: 300px; top: 20px; width: 300px; height: 200px;">
+        <div class="handle"></div>
+        <script src="https://de.windfinder.com/widget/forecast/js/sporthafen_seeburg_schleswig-holstein_germany?unit_wave=m&unit_rain=mm&unit_temperature=c&unit_wind=bft&unit_pressure=hPa&days=4&show_day=1&show_pressure=0&show_waves=0&show_rain=0"></script>
+    </div>
+
+    <div class="widget" id="windFinderWidget2" style="left: 20px; top: 500px; width: 300px; height: 200px;">
+        <div class="handle"></div>
+        <script src="https://de.windfinder.com/widget/forecast/js/wassersportverein_fleckeby_e.v._schleswig-holstein_germany?unit_wave=m&unit_rain=mm&unit_temperature=c&unit_wind=bft&unit_pressure=hPa&days=4&show_day=1&show_pressure=0&show_waves=0&show_rain=0"></script>
+    </div>
+
+    <div class="widget" id="calculatorWidget" style="left: 300px; top: 500px; width: 220px; height: 258px;">
+        <div class="handle"></div>
+        <iframe frameborder="0" scrolling="no" src="https://mczak.com/code/calculator/calcframe/" style="width: 208px; height: 258px;"></iframe>
+    </div>
+
+    <div class="widget" id="meteoblueMapWidget" style="left: 20px; top: 800px; width: 600px; height: 720px;">
+        <div class="handle"></div>
+        <iframe src="https://www.meteoblue.com/de/wetter/maps/widget/kiel_deutschland_2891122?windAnimation=0&gust=1&satellite=1&cloudsAndPrecipitation=1&temperature=1&sunshine=0&extremeForecastIndex=1&geoloc=fixed&tempunit=C&windunit=bft&lengthunit=metric&zoom=5&autowidth=auto"
+            frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox" style="width: 100%; height: 100%;"></iframe>
+    </div>
+
+    <div class="widget" id="meteoblueForecastWidget" style="left: 300px; top: 800px; width: 480px; height: 593px;">
+        <div class="handle"></div>
+        <iframe src="https://www.meteoblue.com/de/wetter/widget/three?geoloc=detect&nocurrent=0&noforecast=0&days=4&tempunit=CELSIUS&windunit=BEAUFORT&layout=monochrome"
+            frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox" style="width: 460px; height: 593px"></iframe>
+    </div>
+
+    <div class="widget linksWidget" id="linksWidget" style="left: 600px; top: 20px; width: 200px; height: auto;">
+        <div class="handle"></div>
+        <div id="linksContainer" style="padding: 10px; display: flex; flex-direction: column; align-items: center;">
+            <a href="https://web.de" target="_blank" draggable="true" tabindex="0">
+                <img src="https://web.de/favicon.ico" alt="Web.de" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://wikipedia.org" target="_blank" draggable="true" tabindex="0">
+                <img src="https://wikipedia.org/favicon.ico" alt="Wikipedia" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://chat.mistral.ai" target="_blank" draggable="true" tabindex="0">
+                <img src="https://chat.mistral.ai/favicon.ico" alt="Mistral AI" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://bing.com" target="_blank" draggable="true" tabindex="0">
+                <img src="https://bing.com/favicon.ico" alt="Bing" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://chat.openai.com" target="_blank" draggable="true" tabindex="0">
+                <img src="https://chat.openai.com/favicon.ico" alt="ChatGPT" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://copilot.microsoft.com" target="_blank" draggable="true" tabindex="0">
+                <img src="https://copilot.microsoft.com/favicon.ico" alt="Copilot" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://google.de" target="_blank" draggable="true" tabindex="0">
+                <img src="https://google.com/favicon.ico" alt="Google" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://youtube.com" target="_blank" draggable="true" tabindex="0">
+                <img src="https://youtube.com/favicon.ico" alt="YouTube" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://schule-sh.de" target="_blank" draggable="true" tabindex="0">
+                <img src="https://itslearning.com/favicon.ico" alt="Itslearning" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://icloud.com" target="_blank" draggable="true" tabindex="0">
+                <img src="https://icloud.com/favicon.ico" alt="iCloud" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://onedrive.com" target="_blank" draggable="true" tabindex="0">
+                <img src="https://onedrive.com/favicon.ico" alt="OneDrive" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://www.meteoblue.com/" target="_blank" draggable="true" tabindex="0">
+                <img src="https://meteoblue.com/favicon.ico" alt="Meteoblue" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://perplexity.ai" target="_blank" draggable="true" tabindex="0">
+                <img src="https://perplexity.ai/favicon.ico" alt="Perplexity" style="width: 48px; height: 48px;">
+            </a>
+            <a href="https://startpage.com" target="_blank" draggable="true" tabindex="0">
+                <img src="https://startpage.com/favicon.ico" alt="Startpage" style="width: 48px; height: 48px;">
+            </a>
+        </div>
+    </div>
+
+    <button onclick="toggleEditMode()">Bearbeitungsmodus</button>
+
+    <script>
+        let isEditMode = false;
+        let isDragging = false;
+        let offsetX, offsetY;
+        let currentDragElement = null;
+        let selectedWidget = null;
+        let selectedLink = null;
+        let isResizing = false;
+        let draggedLink = null;
+
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const handles = document.querySelectorAll('.handle');
+            handles.forEach(handle => {
+                handle.style.cursor = isEditMode ? 'grab' : 'default';
+            });
+
+            const links = document.querySelectorAll('.linksWidget a');
+            links.forEach(link => {
+                link.draggable = isEditMode;
+            });
+
+            if (isEditMode) {
+                loadPositionsFromLocalStorage();
+                loadLinksOrderFromLocalStorage();
+            } else {
+                savePositionsToLocalStorage();
+                saveLinksOrderToLocalStorage();
+                if (selectedWidget) {
+                    selectedWidget.classList.remove('selected');
+                    selectedWidget = null;
+                }
+                if (selectedLink) {
+                    selectedLink.classList.remove('selected');
+                    selectedLink = null;
+                }
+                if (isResizing) {
+                    isResizing = false;
+                }
+            }
+        }
+
+        function savePositionsToLocalStorage() {
+            const widgets = document.querySelectorAll('.widget');
+            const positions = {};
+            widgets.forEach(widget => {
+                positions[widget.id] = {
+                    x: widget.style.left,
+                    y: widget.style.top,
+                    width: widget.style.width,
+                    height: widget.style.height
+                };
+            });
+            localStorage.setItem('widgetPositions', JSON.stringify(positions));
+        }
+
+        function loadPositionsFromLocalStorage() {
+            const positions = JSON.parse(localStorage.getItem('widgetPositions'));
+            if (positions) {
+                Object.keys(positions).forEach(id => {
+                    const widget = document.getElementById(id);
+                    if (widget) {
+                        widget.style.left = positions[id].x;
+                        widget.style.top = positions[id].y;
+                        widget.style.width = positions[id].width;
+                        widget.style.height = positions[id].height;
+                    }
+                });
+            }
+        }
+
+        function saveLinksOrderToLocalStorage() {
+            const linksContainer = document.getElementById('linksContainer');
+            const links = linksContainer.querySelectorAll('a');
+            const linksOrder = [];
+            links.forEach(link => {
+                linksOrder.push(link.outerHTML);
+            });
+            localStorage.setItem('linksOrder', JSON.stringify(linksOrder));
+        }
+
+        function loadLinksOrderFromLocalStorage() {
+            const linksOrder = JSON.parse(localStorage.getItem('linksOrder'));
+            if (linksOrder) {
+                const linksContainer = document.getElementById('linksContainer');
+                linksContainer.innerHTML = '';
+                linksOrder.forEach(linkHTML => {
+                    linksContainer.innerHTML += linkHTML;
+                });
+            }
+        }
+
+        document.addEventListener('mousedown', function(e) {
+            if (isEditMode && e.target.classList.contains('handle')) {
+                isDragging = true;
+                currentDragElement = e.target.parentElement;
+                offsetX = e.clientX - currentDragElement.getBoundingClientRect().left;
+                offsetY = e.clientY - currentDragElement.getBoundingClientRect().top;
+                currentDragElement.classList.add('dragging');
+            }
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging && currentDragElement) {
+                currentDragElement.style.left = `${e.clientX - offsetX}px`;
+                currentDragElement.style.top = `${e.clientY - offsetY}px`;
+            }
+        });
+
+        document.addEventListener('mouseup', function(e) {
+            if (isDragging && currentDragElement) {
+                isDragging = false;
+                currentDragElement.classList.remove('dragging');
+                currentDragElement = null;
+                savePositionsToLocalStorage();
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (isEditMode && e.target.closest('.widget')) {
+                if (selectedWidget) {
+                    selectedWidget.classList.remove('selected');
+                }
+                selectedWidget = e.target.closest('.widget');
+                selectedWidget.classList.add('selected');
+                selectedLink = null;
+                isResizing = false;
+            }
+
+            if (isEditMode && e.target.closest('.linksWidget a')) {
+                if (selectedLink) {
+                    selectedLink.classList.remove('selected');
+                }
+                selectedLink = e.target.closest('.linksWidget a');
+                selectedLink.classList.add('selected');
+                selectedWidget = null;
+            }
+        });
+
+        document.addEventListener('dblclick', function(e) {
+            if (isEditMode && e.target.classList.contains('handle')) {
+                if (selectedWidget) {
+                    selectedWidget.classList.remove('selected');
+                }
+                selectedWidget = e.target.parentElement;
+                selectedWidget.classList.add('selected', 'resizing');
+                isResizing = true;
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (isEditMode) {
+                if (selectedWidget) {
+                    const step = 10; // Anzahl der Pixel, um die sich das Widget pro Tastendruck bewegen soll
+                    if (isResizing) {
+                        switch (e.key) {
+                            case 'w':
+                                selectedWidget.style.height = `${selectedWidget.offsetHeight - step}px`;
+                                break;
+                            case 's':
+                                selectedWidget.style.height = `${selectedWidget.offsetHeight + step}px`;
+                                break;
+                            case 'a':
+                                selectedWidget.style.width = `${selectedWidget.offsetWidth - step}px`;
+                                break;
+                            case 'd':
+                                selectedWidget.style.width = `${selectedWidget.offsetWidth + step}px`;
+                                break;
+                        }
+                    } else {
+                        switch (e.key) {
+                            case 'w':
+                                selectedWidget.style.top = `${selectedWidget.offsetTop - step}px`;
+                                break;
+                            case 's':
+                                selectedWidget.style.top = `${selectedWidget.offsetTop + step}px`;
+                                break;
+                            case 'a':
+                                selectedWidget.style.left = `${selectedWidget.offsetLeft - step}px`;
+                                break;
+                            case 'd':
+                                selectedWidget.style.left = `${selectedWidget.offsetLeft + step}px`;
+                                break;
+                        }
+                    }
+                }
+
+                if (selectedLink) {
+                    const linksContainer = document.getElementById('linksContainer');
+                    const links = Array.from(linksContainer.querySelectorAll('a'));
+                    const index = links.indexOf(selectedLink);
+                    if (e.key === 'w' && index > 0) {
+                        linksContainer.insertBefore(selectedLink, links[index - 1]);
+                    } else if (e.key === 's' && index < links.length - 1) {
+                        linksContainer.insertBefore(selectedLink, links[index + 1].nextSibling);
+                    }
+                    saveLinksOrderToLocalStorage();
+                }
+            }
+        });
+
+        document.addEventListener('dragstart', function(e) {
+            if (isEditMode && e.target.tagName === 'A') {
+                draggedLink = e.target;
+                e.dataTransfer.setData('text/plain', ''); // Necessary for Firefox
+                e.preventDefault(); // Prevent the default link behavior
+            }
+        });
+
+        document.addEventListener('dragover', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('drop', function(e) {
+            e.preventDefault();
+            if (isEditMode && e.target.tagName === 'A' && e.target !== draggedLink) {
+                const linksContainer = document.getElementById('linksContainer');
+                linksContainer.insertBefore(draggedLink, e.target.nextSibling);
+                saveLinksOrderToLocalStorage();
+            }
+        });
+
+        window.addEventListener('load', function() {
+            const splashScreen = document.getElementById('splashScreen');
+            setTimeout(() => {
+                splashScreen.style.opacity = '0';
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                }, 600); // Dauer der Ausblendanimation
+            }, 1000); // Dauer der Anzeigezeit des Splash-Screens
+            loadPositionsFromLocalStorage();
+            loadLinksOrderFromLocalStorage();
+        });
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Page</title>
+    <style>
+        .right-middle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .small-circle-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+        .small-circle-button::after {
+            content: 'Survey';
+            position: absolute;
+            top: -25px;
+            right: 50%;
+            transform: translateX(50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .small-circle-button:hover::after {
+            opacity: 1;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="small-circle-button right-middle" data-tally-open="nGQ92k" data-tally-layout="modal" data-tally-overlay="1">Click me</button>
+
+    <script async src="https://tally.so/widgets/embed.js"></script>
+</body>
+</html>
+
